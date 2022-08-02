@@ -15,7 +15,6 @@ jobs:
         #   # (optional)
         #   changelog: CHANGELOG.md
         env:
-          # (required)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   upload-assets:
@@ -24,7 +23,7 @@ jobs:
         include:
           - target: aarch64-unknown-linux-gnu
             os: ubuntu-20.04
-            build_tool: cross
+            build_tool: cross # Use https://github.com/cross-rs/cross for ARM
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-20.04
             build_tool: cargo
@@ -41,10 +40,7 @@ jobs:
       - uses: taiki-e/upload-rust-binary-action@v1
         with:
           bin: rust_hello_world
-          # (optional) Target triple, default is host triple.
           target: ${{ matrix.target }}
-          # (optional) Tool to build binaries (cargo, or cross)
           build_tool: ${{ matrix.build_tool }}
         env:
-          # (required) GitHub token for uploading assets to GitHub Releases.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
