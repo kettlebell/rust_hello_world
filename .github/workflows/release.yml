@@ -28,6 +28,8 @@ jobs:
         with:
           perl-version: '5.32'
           distribution: strawberry
+      - run: cpanm --installdeps .
+      - run: prove -lv t
         name: Install cross-compilation tools
       - uses: taiki-e/upload-rust-binary-action@v1
         with:
