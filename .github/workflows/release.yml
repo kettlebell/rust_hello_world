@@ -5,6 +5,30 @@ on:
     types: [published]
 
 jobs:
+  upload-asset-windows:
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-pc-windows-msvc
+            os: windows-2019
+            build_tool: cargo
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: '5.32'
+          distribution: strawberry
+        name: Install strawberry perl for windows
+      - run: cpanm --installdeps .
+      - run: prove -lv t
+      - uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          bin: oracle-core
+          target: ${{ matrix.target }}
+          build_tool: ${{ matrix.build_tool }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   upload-assets:
     strategy:
       matrix:
@@ -26,31 +50,6 @@ jobs:
           perl-version: '5.32'
           distribution: strawberry
         name: Install strawberry perl for windows
-      - uses: taiki-e/upload-rust-binary-action@v1
-        with:
-          bin: oracle-core
-          target: ${{ matrix.target }}
-          build_tool: ${{ matrix.build_tool }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  upload-asset-windows:
-    strategy:
-      matrix:
-        include:
-          - target: x86_64-pc-windows-msvc
-            os: windows-2019
-            build_tool: cargo
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: '5.32'
-          distribution: strawberry
-        name: Install strawberry perl for windows
-      - run: cpanm --installdeps .
-      - run: prove -lv t
       - uses: taiki-e/upload-rust-binary-action@v1
         with:
           bin: oracle-core
