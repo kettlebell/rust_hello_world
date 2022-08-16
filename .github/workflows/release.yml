@@ -5,25 +5,6 @@ on:
     types: [published]
 
 jobs:
-  upload-asset-windows:
-    strategy:
-      matrix:
-        include:
-          - target: x86_64-pc-windows-msvc
-            os: windows-latest
-            build_tool: cargo
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
-      - run: vcpkg install openssl:x64-windows-static-md
-      - uses: taiki-e/upload-rust-binary-action@v1
-        with:
-          bin: oracle-core
-          target: ${{ matrix.target }}
-          build_tool: ${{ matrix.build_tool }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   upload-assets:
     strategy:
       matrix:
@@ -40,11 +21,25 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - uses: shogo82148/actions-setup-perl@v1
+      - uses: taiki-e/upload-rust-binary-action@v1
         with:
-          perl-version: '5.32'
-          distribution: strawberry
-        name: Install strawberry perl for windows
+          bin: oracle-core
+          target: ${{ matrix.target }}
+          build_tool: ${{ matrix.build_tool }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  upload-asset-windows:
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            build_tool: cargo
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
+      - run: vcpkg install openssl:x64-windows-static-md
       - uses: taiki-e/upload-rust-binary-action@v1
         with:
           bin: oracle-core
