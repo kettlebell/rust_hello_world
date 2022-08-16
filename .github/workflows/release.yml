@@ -10,18 +10,13 @@ jobs:
       matrix:
         include:
           - target: x86_64-pc-windows-msvc
-            os: windows-2019
+            os: windows-latest
             build_tool: cargo
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: '5.32'
-          distribution: strawberry
-        name: Install strawberry perl for windows
-      - run: cpanm --installdeps .
-      - run: prove -lv t
+      - run: echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
+      - run: vcpkg install openssl:x64-windows-static-md
       - uses: taiki-e/upload-rust-binary-action@v1
         with:
           bin: oracle-core
