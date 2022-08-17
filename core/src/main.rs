@@ -166,7 +166,7 @@ fn main() {
 
         Command::Run { read_only } => {
             assert_wallet_unlocked(&new_node_interface());
-            let (_, repost_receiver) = bounded(1);
+            //let (_, repost_receiver) = bounded(1);
 
             // Start Oracle Core GET API Server
             //thread::Builder::new()
