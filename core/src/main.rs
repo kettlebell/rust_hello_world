@@ -39,7 +39,7 @@ mod wallet;
 use actions::execute_action;
 use anyhow::anyhow;
 use clap::{Parser, Subcommand};
-use crossbeam::channel::bounded;
+//use crossbeam::channel::bounded;
 use ergo_lib::ergotree_ir::chain::address::Address;
 use ergo_lib::ergotree_ir::chain::address::AddressEncoder;
 use ergo_lib::ergotree_ir::chain::address::NetworkPrefix;
