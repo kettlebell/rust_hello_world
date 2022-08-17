@@ -13,7 +13,7 @@ serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8"
 json = "0.12.4"
 serde_json = "1.0.57"
-sincere = "0.6.6"
+#sincere = "0.6.6"
 thiserror = "1.0.20"
 anyhow = "1.0.32"
 base16 = "0.2.1"

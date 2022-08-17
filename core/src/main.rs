@@ -169,12 +169,12 @@ fn main() {
             let (_, repost_receiver) = bounded(1);
 
             // Start Oracle Core GET API Server
-            thread::Builder::new()
-                .name("Oracle Core GET API Thread".to_string())
-                .spawn(|| {
-                    api::start_get_api(repost_receiver);
-                })
-                .ok();
+            //thread::Builder::new()
+            //    .name("Oracle Core GET API Thread".to_string())
+            //    .spawn(|| {
+            //        api::start_get_api(repost_receiver);
+            //    })
+            //    .ok();
             let op = OraclePool::new().unwrap();
             loop {
                 if let Err(e) = main_loop_iteration(&op, read_only) {
